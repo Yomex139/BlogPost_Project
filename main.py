@@ -67,7 +67,6 @@ gravatar = Gravatar(app,
 app.jinja_env.globals['gravatar'] = gravatar
 
 
-
 # CONFIGURE TABLES
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
@@ -317,4 +316,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=False)
