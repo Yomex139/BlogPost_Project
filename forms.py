@@ -33,3 +33,5 @@ class CommentForm(FlaskForm):
     body = CKEditorField('Comment', render_kw={'placeholder': 'Enter your comment here'})
     submit = SubmitField('Submit')
 
+
+

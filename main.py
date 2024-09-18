@@ -107,17 +107,8 @@ class Comment(db.Model):
     user = db.relationship('User', back_populates='comments')
 
 
-# with app.app_context():
-#     db.create_all()
-#
-#     # Fetch user with id 1
-#     user = User.query.get(1)
-#
-#     # Set as admin
-#     user.is_admin = True
-#
-#     # Save changes to the database
-#     db.session.commit()
+with app.app_context():
+    db.create_all()
 
 from functools import wraps
 from flask import redirect, url_for, flash
@@ -192,6 +183,18 @@ def logout():
 @app.route('/')
 def get_all_posts():
     year = date.today().year
+
+    # Check if there are any users in the database
+    first_user = User.query.first()
+
+    # If no users exist, redirect to the register page
+    if not first_user:
+        flash("No users found. Please register first.", "info")
+        return redirect(url_for('register'))
+    else:
+        # Fetch the first user and set them as admin
+        first_user.is_admin = True
+        db.session.commit()
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
     return render_template("index.html", all_posts=posts, current_year=year)
